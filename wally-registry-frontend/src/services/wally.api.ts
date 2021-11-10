@@ -1,10 +1,10 @@
 import { WallyPackageBrief, WallyPackageMetadata } from "../types/wally"
 
-const wallyApiBaseUrl = process.env.REACT_APP_WALLY_API_ENVIRONMENT
+const wallyApiBaseUrl = `${process.env.REACT_APP_WALLY_API_ENVIRONMENT}/v1`
 // API/v1/package-search?query=<query>
-const wallyApiSearchUrl = `/v1/${wallyApiBaseUrl}/package-search`
+const wallyApiSearchUrl = `${wallyApiBaseUrl}/package-search`
 // API/v1/package-metadata/<scope>/<name>
-const wallyApiMetadataUrl = `/v1/${wallyApiBaseUrl}/package-metadata`
+const wallyApiMetadataUrl = `${wallyApiBaseUrl}/package-metadata`
 
 /**
  * Fetches a list of packages from Wally. The search string is matched against the package scope, name, and description of all available packages
