@@ -23,10 +23,17 @@ fn make_credentials_callback(
     access_token: Option<String>,
     config: &git2::Config,
 ) -> impl (FnMut(&str, Option<&str>, CredentialType) -> Result<Cred, git2::Error>) + '_ {
+    let mut sshkey_tried = false;
     let mut cred_helper_tried = false;
     let mut token_tried = false;
 
     move |url, username, allowed_types| {
+        if allowed_types.contains(CredentialType::SSH_KEY) && !sshkey_tried {
+            sshkey_tried = true;
+            let username = username.unwrap();
+            return git2::Cred::ssh_key_from_agent(username);
+        }
+
         if allowed_types.contains(CredentialType::USER_PASS_PLAINTEXT) {
             if let Some(token) = &access_token {
                 if !token_tried {
